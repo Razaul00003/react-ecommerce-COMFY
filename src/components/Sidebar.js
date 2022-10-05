@@ -9,25 +9,21 @@ import CartButtons from "./CartButtons";
 import { useUserContext } from "../context/user_context";
 
 const Sidebar = () => {
-  const data = useProductsContext();
-  const sidebarToggleHandler = () => {
-    if (data.isSidebarOpen) {
-      data.closeSidebar();
-      data.isSidebarOpen = false;
-    }
-  };
+  const { isSidebarOpen, closeSidebar } = useProductsContext();
+
   return (
     <SidebarContainer>
       <aside
-        className={`${data.isSidebarOpen ? "sidebar show-sidebar" : "sidebar"}`}
+        className={`${isSidebarOpen ? "sidebar show-sidebar" : "sidebar"}`}
       >
         <div className="sidebar-header">
-          <img src={logo} className="logo" alt="comfy logo" />
-          <button
-            className="close-btn"
-            type="button"
-            onClick={sidebarToggleHandler}
-          >
+          <img
+            src={logo}
+            className="logo"
+            alt="comfy logo"
+            onClick={closeSidebar}
+          />
+          <button className="close-btn" type="button" onClick={closeSidebar}>
             <FaTimes />
           </button>
         </div>
@@ -36,12 +32,16 @@ const Sidebar = () => {
             const { id, text, url } = link;
             return (
               <li key={id}>
-                <Link to={url}>{text}</Link>
+                <Link to={url} onClick={closeSidebar}>
+                  {text}
+                </Link>
               </li>
             );
           })}
           <li>
-            <Link to="/checkout">CheckOut</Link>
+            <Link to="/checkout" onClick={closeSidebar}>
+              CheckOut
+            </Link>
           </li>
         </ul>
         <CartButtons />
